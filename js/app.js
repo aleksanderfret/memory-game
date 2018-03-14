@@ -104,10 +104,13 @@ function insertPageDate() {
  * @description place cards on the board
  */
 function placeCards(reverseType, obverseType, Level) {
+  const pairsOfCards = difficultyLevels[level];
+  console.log(pairsOfCards);
   const reversTypeClass = reverseTypes[reverseType].class;
   const cardsDirectory = obverseTypes[obverseType].directory;
 
-  const cards = shuffle(obverseTypes[obverseType].collection).splice(level-1);
+  const cards = shuffle(obverseTypes[obverseType].collection).splice(0, pairsOfCards);
+  console.log(cards);
   const doubleShuffleCards = shuffle(cards.concat(cards));
   const cardList = document.createDocumentFragment();
 
