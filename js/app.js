@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
-const deck = document.querySelector('#cards');
-const initiaLevel = 'easy';
+const deck = document.querySelector('#deck');
+const initiaLevel = 'hard';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 
@@ -8,13 +8,11 @@ let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
 
-
-
 const obverseTypes = {
   animals: {
     id: 1,
-    label: 'letters',
-    directory: 'letters',
+    label: 'animals',
+    directory: 'animals',
     collection: [],
     license: 'Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>'
   },
@@ -59,7 +57,7 @@ const reverseTypes = {
   },
   red: {
     id: 1,
-    class: 'green-reverse'
+    class: 'red-reverse'
   },
   udacity: {
     id: 1,
@@ -72,9 +70,9 @@ const reverseTypes = {
 };
 const difficultyLevels = {
   easy: 8,
-  normal: 16,
+  normal: 18,
   hard: 32,
-  advanced: 50
+  expert: 50
 };
 
 /**
@@ -105,20 +103,17 @@ function insertPageDate() {
  */
 function placeCards(reverseType, obverseType, Level) {
   const pairsOfCards = difficultyLevels[level];
-  console.log(pairsOfCards);
   const reversTypeClass = reverseTypes[reverseType].class;
   const cardsDirectory = obverseTypes[obverseType].directory;
-
   const cards = shuffle(obverseTypes[obverseType].collection).splice(0, pairsOfCards);
-  console.log(cards);
   const doubleShuffleCards = shuffle(cards.concat(cards));
   const cardList = document.createDocumentFragment();
 
   for (card of doubleShuffleCards) {
-    const newCard = createCard(card, reversTypeClass, cardsDirectory);
+    const newCard = createCard(card, reversTypeClass, cardsDirectory, level);
     cardList.appendChild(newCard);
   }
-
+  deck.classList.add(level+'-level-deck');
   deck.appendChild(cardList);
 }
 
@@ -129,9 +124,9 @@ function placeCards(reverseType, obverseType, Level) {
  * @param {string} directory
  * @return {object}
  */
-function createCard(card, reversTypeClass, directory) {
+function createCard(card, reversTypeClass, directory, level) {
   const newCardPlace = document.createElement('li');
-  newCardPlace.classList.add('card-place');
+  newCardPlace.classList.add('card-place', level+'-level-place');
 
   const newCard = document.createElement('div');
   newCard.classList.add('card');

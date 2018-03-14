@@ -47,24 +47,144 @@ table {
 	border-spacing: 0;
 }
 
-.cards {
+body {
+  background-color: #999;
+}
+
+/* ############### CARDS LAYOUT ############### */
+
+.deck {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 300px;
-  height: 300px;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.easy-level-deck {
+  width: 90vw;
+  padding: 2vw;
+}
+
+.normal-level-deck{
+  width: 92vw;
+  padding: 2vw;
+}
+
+.hard-level-deck {
+  width: 97vw;
+  padding: 1vw;
+}
+
+.expert-level-deck {
+  width: 91vw;
+  padding: 1vw;
 }
 
 .card-place {
   position: relative;
-  margin: 2.5%;
-  width: 20%;
-  height: 20%;
   z-index: 1;
+  perspective: 1000px;
 }
 
-.card-place {
-  perspective: 1000px;
+.easy-level-place {
+  width: 20vw;
+  height: 20vw;
+  margin: 0 2vw 2vw 0;
+}
+
+.normal-level-place {
+  width: 13vw;
+  height: 13vw;
+  margin: 0 2vw 2vw 0;
+}
+
+.hard-level-place {
+  width: 11vw;
+  height: 11vw;
+  margin: 0 1vw 1vw 0;
+}
+
+.expert-level-place {
+  width: 8vw;
+  height: 8vw;
+  margin: 0 1vw 1vw 0;
+}
+
+.easy-level-place:nth-of-type(4n+4),
+.normal-level-place:nth-of-type(6n+6),
+.hard-level-place:nth-of-type(8n+8),
+.expert-level-place:nth-of-type(10n+10)
+ {
+  margin-right: 0;
+}
+
+.easy-level-place:nth-of-type(n+13),
+.normal-level-place:nth-of-type(n+31),
+.hard-level-place:nth-of-type(n+57),
+.expert-level-place:nth-of-type(n+91) {
+  margin-bottom: 0;
+}
+
+@media screen and (min-width: 551px) {
+  .hard-level-deck {
+    width: 90vw;
+    padding: 2vw;
+  }
+
+  .expert-level-deck {
+    width: 92vw;
+    padding: 2vw;
+  }
+  .hard-level-place {
+    width: 9vw;
+    height: 9vw;
+    margin: 0 2vw 2vw 0;
+  }
+  .expert-level-place {
+    width: 7vw;
+    height: 7vw;
+    margin: 0 2vw 2vw 0;
+  }
+}
+
+@media screen and (min-width: 861px) {
+  .easy-level-deck {
+    width: 795px;
+    padding: 15px;
+  }
+  .easy-level-place {
+    width: 180px;
+    height: 180px;
+    margin: 0 15px 15px 0;
+  }
+  .normal-level-deck {
+    width: 795;
+    padding: 15px;
+  }
+  .normal-level-place {
+    width: 115px;
+    height: 115px;
+    margin: 0 15px 15px 0;
+  }
+  .hard-level-deck {
+    width: 791px;
+    padding: 15px;
+  }
+  .hard-level-place {
+    width: 82px;
+    height: 82px;
+    margin: 0 15px 15px 0;
+  }
+  .expert-level-deck {
+    width: 795px;
+    padding: 15px;
+  }
+  .expert-level-place {
+    width: 63px;
+    height: 63px;
+    margin: 0 15px 15px 0;
+  }
 }
 
 .card {
@@ -72,6 +192,7 @@ table {
   height: 100%;
   transform-style: preserve-3d;
   transition: all 1.5s ease;
+  border-radius: 5px;
 }
 
 .card-place:hover .card {
@@ -82,9 +203,10 @@ table {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: yellow;
+  box-sizing: border-box;
   backface-visibility: hidden;
   border-radius: 5px;
+  box-shadow: 3px 3px 5px 0 rgba(90, 90, 90, 0.75);
 }
 
 .reverse.obverse {
@@ -92,8 +214,22 @@ table {
   transform: rotateY(180deg);
   box-sizing: border-box;
   border-radius: 5px;
+  background-color: #fff;
+}
+
+.blue-reverse {
+ background-color: #19469e;
+}
+
+.green-reverse {
+ background-color: #00940f;
+}
+
+.red-reverse {
+ background-color: #c50000;
 }
 
 .card-image {
   border-radius: 5px;
 }
+
