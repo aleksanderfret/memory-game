@@ -1,13 +1,19 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
+
+// DOM elements
 const deck = document.querySelector('#deck');
+
+// initial varaibles captured from DOM elements
 const initiaLevel = 'hard';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 
+// set current variable based on initial variables
 let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
 
+// game settings objects
 const obverseTypes = {
   animals: {
     id: 1,
@@ -100,6 +106,9 @@ function insertPageDate() {
 
 /**
  * @description place cards on the board
+ * @param {string} reverseType
+ * @param {string} obverseType
+ * @param {string} level
  */
 function placeCards(reverseType, obverseType, Level) {
   const pairsOfCards = difficultyLevels[level];
@@ -122,6 +131,7 @@ function placeCards(reverseType, obverseType, Level) {
  * @param {string} card
  * @param {string} reversTypeClass
  * @param {string} directory
+ * @param {string} level
  * @return {object}
  */
 function createCard(card, reversTypeClass, directory, level) {
