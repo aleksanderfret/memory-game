@@ -1,12 +1,8 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
 const deck = document.querySelector('#deck');
-const initiaLevel = 'hard';
+const initiaLevel = 'easy';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
-
-let level = initiaLevel;
-let reverse = initialReverse;
-let obverse = initialObverse;
 
 const obverseTypes = {
   animals: {
@@ -24,7 +20,7 @@ const obverseTypes = {
     license: 'Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>'
   },
   flags: {
-    id: 4,
+    id: 3,
     label: 'flags',
     directory: 'flags',
     collection: ['algeria', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'cameroon', 'canada', 'chile', 'china',
@@ -75,6 +71,15 @@ const difficultyLevels = {
   expert: 50
 };
 
+let level = initiaLevel;
+let reverse = initialReverse;
+let obverse = initialObverse;
+let remainigPairs = difficultyLevels[level];
+let currentFirstCard = null;
+let locked = false;
+let clickCounter = 0;
+let move = 0;
+
 /**
  * @description Initiate game
  */
@@ -113,8 +118,8 @@ function placeCards(reverseType, obverseType, Level) {
     const newCard = createCard(card, reversTypeClass, cardsDirectory, level);
     cardList.appendChild(newCard);
   }
-  deck.classList.add(level+'-level-deck');
   deck.appendChild(cardList);
+  deck.classList.add(level+'-level-deck');
 }
 
 /**
@@ -134,6 +139,7 @@ function createCard(card, reversTypeClass, directory, level) {
   const newReverse = document.createElement('div');
   newReverse.classList.add('reverse', reversTypeClass);
   newReverse.setAttribute('data-card', card);
+  newReverse.setAttribute('data-reverse', true);
 
   const newObverse = document.createElement('div');
   newObverse.classList.add('reverse', 'obverse');
@@ -162,3 +168,50 @@ function shuffle(array) {
     return 0.5 - Math.random()
   });
 }
+
+deck.addEventListener('click', function (event) {
+  if (!locked && event.target.dataset.reverse && event.target !== currentFirstCard){
+    if (clickCounter === 0) {
+      startTimer();
+    }
+    clickCounter++;
+    event.target.parentElement.classList.add('fliped-card');
+    if (!currentFirstCard) {
+      currentFirstCard = event.target;
+    } else {
+      move++;
+      locked = true;
+      setTimeout(function(){
+        checkPair(currentFirstCard, event.target);
+      }, 1000);
+    }
+  }
+});
+
+function checkPair(firstCard, secondCard) {
+  const firstCardData = firstCard.getAttribute('data-card');
+  const secondCardData = secondCard.getAttribute('data-card');
+  if (firstCardData !== secondCardData) {
+    //zaznacz wizualnie
+    firstCard.parentElement.classList.remove('fliped-card');
+    secondCard.parentElement.classList.remove('fliped-card');
+  } else {
+    //zaznacz wizualnie parę
+    remainigPairs--;
+    console.log(remainigPairs);
+    if(remainigPairs === 0) {
+      finishGame();
+    }
+  }
+  currentFirstCard = null;
+  locked = false;
+}
+
+function startTimer() {
+  console.log('start');
+}
+
+function finishGame() {
+  console.log('game over');
+}
+

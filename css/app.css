@@ -195,7 +195,7 @@ body {
   border-radius: 5px;
 }
 
-.card-place:hover .card {
+.fliped-card {
   transform: rotateY(180deg);
 }
 
