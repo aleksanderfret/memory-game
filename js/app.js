@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', gameInitHandler);
 const deck = document.querySelector('#deck');
 
 // initial varaibles captured from DOM elements
-const initiaLevel = 'hard';
+const initiaLevel = 'normal';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 
