@@ -8,11 +8,6 @@ const initiaLevel = 'easy';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 
-// set current variable based on initial variables
-let level = initiaLevel;
-let reverse = initialReverse;
-let obverse = initialObverse;
-
 // game settings objects
 const obverseTypes = {
   animals: {
@@ -81,6 +76,7 @@ const difficultyLevels = {
   expert: 50
 };
 
+// set current variable based on initial variables
 let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
