@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', gameInitHandler);
 console.log(window.devicePixelRatio);
 // DOM elements
 const deck = document.querySelector('#deck');
+const moveControl = document.querySelector('.moves-number');
 
 // initial varaibles captured from DOM elements
 const initiaLevel = 'expert';
@@ -220,6 +221,7 @@ deck.addEventListener('click', function (event) {
       currentFirstCard = event.target;
     } else {
       move++;
+      moveControl.textContent = move;
       locked = true;
       setTimeout(function(){
         checkPair(currentFirstCard, event.target);
