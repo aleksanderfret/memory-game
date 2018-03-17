@@ -3,53 +3,211 @@
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 
 body {
-  background-color: #999;
+  line-height: 1;
 }
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  font: normal normal 300 16px/1.2em "Ubuntu";
+}
+
+/* ############### GAME PANEL ############### */
+
+.panel {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+@media screen and (min-width: 701px) {
+  .panel {
+    padding: 0.2em 4em;
+  }
+}
+
+.game-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.game-button,
+.stopwatch,
+.moves {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1em;
+  padding: 0.7em;
+}
+
+.stopwatch .fas,
+.moves .fas {
+  display: none;
+}
+
+.time,
+.moves-number {
+  font-size: 1em;
+}
+
+@media screen and (min-width: 361px) {
+  .stopwatch .fas,
+  .moves .fas {
+    display: inline;
+  }
+  .time,
+  .moves-number {
+    padding-left: 0.5em;
+    font-size: 1em;
+  }
+}
+
+@media screen and (min-width: 551px) {
+  .game-status {
+    font-size: 1.2em;
+  }
+  .game-button,
+  .stopwatch,
+  .moves {
+    font-size: 1.2em;
+    padding: 0.5em;
+  }
+  .time,
+  .moves-number {
+    padding-left: 0.5em;
+  }
+}
+
 
 /* ############### CARDS LAYOUT ############### */
 
@@ -66,7 +224,7 @@ body {
   padding: 2vw;
 }
 
-.normal-level-deck{
+.normal-level-deck {
   width: 92vw;
   padding: 2vw;
 }
@@ -117,8 +275,7 @@ body {
 .easy-level-place:nth-of-type(4n+4),
 .normal-level-place:nth-of-type(6n+6),
 .hard-level-place:nth-of-type(8n+8),
-.expert-level-place:nth-of-type(10n+10)
- {
+.expert-level-place:nth-of-type(10n+10) {
   margin-right: 0;
 }
 
@@ -150,7 +307,12 @@ body {
   }
 }
 
-@media screen and (min-width: 861px) {
+@media
+  only screen and (-webkit-min-device-pixel-ratio: 1) and (min-width: 861px),
+  only screen and (min--moz-device-pixel-ratio: 1) and (min-width: 861px),
+  only screen and (-o-min-device-pixel-ratio: 1) and (min-width: 861px),
+  only screen and (min-device-pixel-ratio: 1) and (min-width: 861px),
+  only screen and (min-resolution: 96dpi) and (min-width: 861px) {
   .easy-level-deck {
     width: 795px;
     padding: 15px;
@@ -189,8 +351,54 @@ body {
   }
 }
 
+@media
+  only screen and (-webkit-min-device-pixel-ratio: 1.25) and (min-width: 681px),
+  only screen and (min--moz-device-pixel-ratio: 1.25) and (min-width: 681px),
+  only screen and (-o-min-device-pixel-ratio: 1.25) and (min-width: 681px),
+  only screen and (min-device-pixel-ratio: 1.25) and (min-width: 681px),
+  only screen and (min-resolution: 120dpi) and (min-width: 681px) {
+  .easy-level-deck {
+    width: 570px;
+    padding: 10px;
+  }
+  .easy-level-place {
+    width: 130px;
+    height: 130px;
+    margin: 0 10px 10px 0;
+  }
+  .normal-level-deck {
+    width: 568px;
+    padding: 10px;
+  }
+  .normal-level-place {
+    width: 83px;
+    height: 83px;
+    margin: 0 10px 10px 0;
+  }
+  .hard-level-deck {
+    width: 570px;
+    padding: 10px;
+  }
+  .hard-level-place {
+    width: 60px;
+    height: 60px;
+    margin: 0 10px 10px 0;
+  }
+  .expert-level-deck {
+    width: 570px;
+    padding: 10px;
+  }
+  .expert-level-place {
+    width: 46px;
+    height: 46px;
+    margin: 0 10px 10px 0;
+  }
+}
+
 /* ############### CARDS FLIP ############### */
+
 /*  http://css3.bradshawenterprises.com/flip/   */
+
 .card {
   width: 100%;
   height: 100%;
@@ -222,21 +430,38 @@ body {
   background-color: #fff;
 }
 
-.blue-reverse {
- background-color: #19469e;
+/* ############### BOARD BACKGROUND ############### */
+
+.board {
+  background-repeat: repeat;
+}
+
+.green-board {
+  background-image: url('../img/background/noisy-texture-green.png');
+}
+
+.blue-board {
+  background-image: url('../img/background/noisy-texture-blue.png');
+}
+
+.red-board {
+  background-image: url('../img/background/noisy-texture-red.png');
 }
 
 /* ############### CARDS REVERSES ############### */
 
+.blue-reverse {
+  background-color: #19469e;
+}
+
 .green-reverse {
- background-color: #00940f;
+  background-color: #00940f;
 }
 
 .red-reverse {
- background-color: #c50000;
+  background-color: #c50000;
 }
 
 .card-image {
   border-radius: 5px;
 }
-

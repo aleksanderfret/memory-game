@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
-
+console.log(window.devicePixelRatio);
 // DOM elements
 const deck = document.querySelector('#deck');
 
 // initial varaibles captured from DOM elements
-const initiaLevel = 'easy';
+const initiaLevel = 'expert';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
+const initialGameBackground = 'green';
 
 // game settings objects
 const obverseTypes = {
@@ -84,10 +85,19 @@ const difficultyLevels = {
   expert: 50
 };
 
+const gameBoard = {
+  background: {
+    blue: 'blue-board',
+    red: 'red-board',
+    green: 'green-board'
+  }
+}
+
 // set current variable based on initial variables
 let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
+let gameBackground = initialGameBackground;
 let remainigPairs = difficultyLevels[level];
 let currentFirstCard = null;
 let locked = false;
@@ -99,6 +109,7 @@ let move = 0;
  */
 function gameInitHandler() {
   insertPageDate();
+  confiureGame(gameBackground)
   placeCards(reverse, obverse, level);
 }
 
@@ -115,6 +126,17 @@ function insertPageDate() {
   } else {
     pageDate.textContent = startYear;
   }
+}
+
+function confiureGame(gameBackground) {
+  const board = document.querySelector('body');
+  const backgroundTypes = Object.keys(gameBoard.background);
+
+  for (backgroundType of backgroundTypes) {
+    board.classList.remove(gameBoard.background[backgroundType]);
+    console.log(gameBoard.background[backgroundType]);
+  }
+  board.classList.add(gameBoard.background[gameBackground]);
 }
 
 /**
