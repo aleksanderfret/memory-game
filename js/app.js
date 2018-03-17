@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
-console.log(window.devicePixelRatio);
 // DOM elements
 const deck = document.querySelector('#deck');
 const moveControl = document.querySelector('.moves-number');
+const timeControl = document.querySelector('.time');
 
 // initial varaibles captured from DOM elements
-const initiaLevel = 'expert';
+const initiaLevel = 'easy';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 const initialGameBackground = 'green';
@@ -105,6 +105,14 @@ let locked = false;
 let clickCounter = 0;
 let move = 0;
 
+let startTimestamp;
+let endTimeStamp;
+let interval;
+let hours = 0;
+let minutes = 0;
+let seconds = 0;
+let houndreth = 0;
+
 /**
  * @description Initiate game
  */
@@ -135,7 +143,6 @@ function confiureGame(gameBackground) {
 
   for (backgroundType of backgroundTypes) {
     board.classList.remove(gameBoard.background[backgroundType]);
-    console.log(gameBoard.background[backgroundType]);
   }
   board.classList.add(gameBoard.background[gameBackground]);
 }
@@ -225,7 +232,7 @@ deck.addEventListener('click', function (event) {
       locked = true;
       setTimeout(function(){
         checkPair(currentFirstCard, event.target);
-      }, 1000);
+      }, 750);
     }
   }
 });
@@ -240,8 +247,8 @@ function checkPair(firstCard, secondCard) {
   } else {
     //zaznacz wizualnie parę
     remainigPairs--;
-    console.log(remainigPairs);
     if(remainigPairs === 0) {
+      stopTimer();
       finishGame();
     }
   }
@@ -250,9 +257,38 @@ function checkPair(firstCard, secondCard) {
 }
 
 function startTimer() {
-  console.log('start');
+  startTimestamp = Date.now();
+  interval = setInterval(stopWatch, 10);
+}
+
+function stopTimer() {
+  endTimeStamp = Date.now();
+  clearInterval(interval);
+}
+
+function stopWatch () {
+  houndreth++;
+  if(houndreth >= 100) {
+    houndreth = 0;
+    seconds++;
+    if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+      if (minutes >= 60) {
+        hours++;
+      }
+    }
+  }
+  const currentTime = ((hours < 10) ? "0" : "") + hours + ':'
+                    + ((minutes < 10) ? "0" : "") + minutes + ':'
+                    + ((seconds < 10) ? "0" : "") + seconds + ':'
+                    + ((houndreth < 10) ? "0" : "") + houndreth;
+  timeControl.textContent = currentTime;
 }
 
 function finishGame() {
-  console.log('game over');
+  const gameTime = timeControl.textContent;
+  const gameTimestampDiff = endTimeStamp - startTimestamp;
+  const gameMoves = move;
+  console.log('game over', gameTime, gameTimestampDiff, gameMoves);
 }
