@@ -70,15 +70,12 @@ const reverseTypes = {
     id: 1,
     class: 'red-reverse'
   },
-  udacity: {
+  grey: {
     id: 1,
-    class: 'udacity-reverse'
-  },
-  author: {
-    id: 1,
-    class: 'author-reverse'
-  },
+    class: 'grey-reverse'
+  }
 };
+
 const difficultyLevels = {
   easy: 8,
   normal: 18,
@@ -112,6 +109,21 @@ let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let houndreth = 0;
+
+const animationEnd = (function(element) {
+  const animations = {
+    animation: 'animationend',
+    OAnimation: 'oAnimationEnd',
+    MozAnimation: 'mozAnimationEnd',
+    WebkitAnimation: 'webkitAnimationEnd',
+  };
+
+  for (let animation in animations) {
+    if (element.style[animation] !== undefined) {
+      return animations[animation];
+    }
+  }
+})(document.createElement('div'));
 
 /**
  * @description Initiate game
@@ -193,11 +205,12 @@ function createCard(card, reversTypeClass, directory, level) {
   newObverse.classList.add('reverse', 'obverse');
   newObverse.setAttribute('data-card', card);
 
-  const cardImage = document.createElement('img');
-  cardImage.classList.add('card-image');
-  cardImage.setAttribute('src', ('img/' + directory + '/' + card + '.svg'));
+  const obverseImage = document.createElement('img');
+  obverseImage.classList.add('card-image');
+  obverseImage.setAttribute('src', ('img/' + directory + '/' + card + '.svg'));
 
-  newObverse.appendChild(cardImage);
+  //newReverse.appendChild(reversImage);
+  newObverse.appendChild(obverseImage);
   newCard.appendChild(newReverse);
   newCard.appendChild(newObverse);
   newCardPlace.appendChild(newCard);
@@ -232,7 +245,7 @@ deck.addEventListener('click', function (event) {
       locked = true;
       setTimeout(function(){
         checkPair(currentFirstCard, event.target);
-      }, 750);
+      }, 1000);
     }
   }
 });
@@ -241,11 +254,11 @@ function checkPair(firstCard, secondCard) {
   const firstCardData = firstCard.getAttribute('data-card');
   const secondCardData = secondCard.getAttribute('data-card');
   if (firstCardData !== secondCardData) {
-    //zaznacz wizualnie
     firstCard.parentElement.classList.remove('fliped-card');
     secondCard.parentElement.classList.remove('fliped-card');
   } else {
-    //zaznacz wizualnie parę
+    firstCard.parentElement.classList.add('found-pair');
+    secondCard.parentElement.classList.add('found-pair');
     remainigPairs--;
     if(remainigPairs === 0) {
       stopTimer();
@@ -255,6 +268,7 @@ function checkPair(firstCard, secondCard) {
   currentFirstCard = null;
   locked = false;
 }
+
 
 function startTimer() {
   startTimestamp = Date.now();

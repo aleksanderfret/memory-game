@@ -243,9 +243,7 @@ body {
   position: relative;
   z-index: 1;
   perspective: 1000px;
-  background-color: #666;
   border-radius: 5px;
-  box-shadow: inset 3px 3px 5px 0 rgba(90, 90, 90, 0.75);
 }
 
 .easy-level-place {
@@ -396,7 +394,6 @@ body {
 }
 
 /* ############### CARDS FLIP ############### */
-
 /*  http://css3.bradshawenterprises.com/flip/   */
 
 .card {
@@ -405,6 +402,7 @@ body {
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   border-radius: 5px;
+  box-shadow: 3px 3px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
 .fliped-card {
@@ -419,15 +417,32 @@ body {
   box-sizing: border-box;
   backface-visibility: hidden;
   border-radius: 5px;
-  box-shadow: 3px 3px 5px 0 rgba(90, 90, 90, 0.75);
+
+  border: 5px solid rgba(255, 255, 255, 0.25);
+  background-position: center, center;
+  background-repeat: no-repeat;
 }
 
 .reverse.obverse {
   display: block;
   transform: rotateY(180deg);
   box-sizing: border-box;
+  padding: 5px;
   border-radius: 5px;
   background-color: #fff;
+  border: none;
+}
+
+.found-pair {
+  transition: all 0.1s ease-in;
+  box-shadow: none;
+  width: 94%;
+  height: 94%;
+  margin: 3%;
+}
+
+.found-pair img {
+  opacity: 0.6;
 }
 
 /* ############### BOARD BACKGROUND ############### */
@@ -450,16 +465,20 @@ body {
 
 /* ############### CARDS REVERSES ############### */
 
+.grey-reverse {
+  background-image: url('../img/reverse/af-logo.svg'), url('../img/reverse/noisy-reverse-grey.png');
+}
+
 .blue-reverse {
-  background-color: #19469e;
+  background-image: url('../img/reverse/af-logo.svg'), url('../img/reverse/noisy-reverse-blue.png');
 }
 
 .green-reverse {
-  background-color: #00940f;
+  background-image: url('../img/reverse/af-logo.svg'), url('../img/reverse/noisy-reverse-green.png');
 }
 
 .red-reverse {
-  background-color: #c50000;
+  background-image: url('../img/reverse/af-logo.svg'), url('../img/reverse/noisy-reverse-red.png');
 }
 
 .card-image {
