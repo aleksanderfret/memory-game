@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', gameInitHandler);
 const deck = document.querySelector('#deck');
 const moveControl = document.querySelector('.moves-number');
 const timeControl = document.querySelector('.time');
+const endGameModal = document.querySelector('.end-modal');
+const timeResult = document.querySelector('.time-result');
+const movesResult = document.querySelector('.moves-result');
+const closeModal = document.querySelector('.close-modal');
 
 // initial varaibles captured from DOM elements
-const initiaLevel = 'easy';
-const initialReverse = 'blue';
-const initialObverse = 'flags';
+const initiaLevel = 'normal';
+const initialReverse = 'grey';
+const initialObverse = 'animals';
 const initialGameBackground = 'green';
 
 // game settings object
@@ -361,5 +365,24 @@ function finishGame() {
   const gameTime = timeControl.textContent;
   const gameTimestampDiff = endTimeStamp - startTimestamp;
   const gameMoves = move;
-  console.log('game over', gameTime, gameTimestampDiff, gameMoves);
+  displayModal(gameTime, gameMoves);
+  move = 0;
+  moveControl.textContent = move;
+  timeControl.textContent = '00:00:00:00';
 }
+
+/**
+ * @description Shows modal to the user and dispalys him his score
+ * @param {string} time
+ * @param {number} moves
+ */
+function displayModal(time, moves) {
+  endGameModal.classList.add('show-modal');
+  timeResult.textContent = timeResult.textContent + time;
+  movesResult.textContent = movesResult.textContent + moves;
+}
+
+// Closes end game modal
+closeModal.addEventListener('click', function hideModal() {
+  endGameModal.classList.remove('show-modal');
+});
