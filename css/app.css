@@ -135,12 +135,51 @@ table {
   border-spacing: 0;
 }
 
+/* ############### GAME LAYOT ############### */
+
 *:focus {
   outline: none;
 }
 
 body {
   font: normal normal 300 16px/1.2em "Ubuntu";
+  background-repeat: repeat;
+}
+
+.game{
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ############### FOOTER ############### */
+.footer {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-size: 0.8em;
+}
+
+.footer ul {
+  padding: 0.5em 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+.footer li {
+  margin: 0 1em;
+}
+
+.footer-link,
+.foter-link:visited {
+  text-decoration: none;
+  font-style: italic;
+  color: #fff;
 }
 
 /* ############### GAME PANEL ############### */
@@ -289,23 +328,41 @@ body {
 }
 
 @media screen and (min-width: 551px) {
+  .easy-level-deck {
+    width: 81vw;
+    padding: 1vw;
+  }
+  .easy-level-place {
+    width: 19vw;
+    height: 19vw;
+    margin: 0 1vw 1vw 0;
+  }
+  .normal-level-deck {
+    width: 79vw;
+    padding: 1vw;
+  }
+  .normal-level-place {
+    width: 12vw;
+    height: 12vw;
+    margin: 0 1vw 1vw 0;
+  }
   .hard-level-deck {
-    width: 90vw;
-    padding: 2vw;
+    width: 81vw;
+    padding: 1vw;
   }
   .expert-level-deck {
-    width: 92vw;
-    padding: 2vw;
+    width: 81vw;
+    padding: 1vw;
   }
   .hard-level-place {
     width: 9vw;
     height: 9vw;
-    margin: 0 2vw 2vw 0;
+    margin: 0 1vw 1vw 0;
   }
   .expert-level-place {
     width: 7vw;
     height: 7vw;
-    margin: 0 2vw 2vw 0;
+    margin: 0 1vw 1vw 0;
   }
 }
 
@@ -316,83 +373,83 @@ body {
   only screen and (min-device-pixel-ratio: 1) and (min-width: 861px),
   only screen and (min-resolution: 96dpi) and (min-width: 861px) {
   .easy-level-deck {
-    width: 795px;
-    padding: 15px;
+    width: 730px;
+    padding: 10px;
   }
   .easy-level-place {
-    width: 180px;
-    height: 180px;
-    margin: 0 15px 15px 0;
+    width: 170px;
+    height: 170px;
+    margin: 0 10px 10px 0;
   }
   .normal-level-deck {
-    width: 795px;
-    padding: 15px;
+    width: 730px;
+    padding: 10px;
   }
   .normal-level-place {
-    width: 115px;
-    height: 115px;
-    margin: 0 15px 15px 0;
+    width: 110px;
+    height: 110px;
+    margin: 0 10px 10px 0;
   }
   .hard-level-deck {
-    width: 791px;
-    padding: 15px;
+    width: 730px;
+    padding: 10px;
   }
   .hard-level-place {
-    width: 82px;
-    height: 82px;
-    margin: 0 15px 15px 0;
+    width: 80px;
+    height: 80px;
+    margin: 0 10px 10px 0;
   }
   .expert-level-deck {
-    width: 795px;
-    padding: 15px;
+    width: 740px;
+    padding: 10px;
   }
   .expert-level-place {
     width: 63px;
     height: 63px;
-    margin: 0 15px 15px 0;
+    margin: 0 10px 10px 0;
   }
 }
 
 @media
-  only screen and (-webkit-min-device-pixel-ratio: 1.25) and (min-width: 681px),
-  only screen and (min--moz-device-pixel-ratio: 1.25) and (min-width: 681px),
-  only screen and (-o-min-device-pixel-ratio: 1.25) and (min-width: 681px),
-  only screen and (min-device-pixel-ratio: 1.25) and (min-width: 681px),
-  only screen and (min-resolution: 120dpi) and (min-width: 681px) {
+  only screen and (-webkit-min-device-pixel-ratio: 1.25) and (min-width: 6661x),
+  only screen and (min--moz-device-pixel-ratio: 1.25) and (min-width: 661px),
+  only screen and (-o-min-device-pixel-ratio: 1.25) and (min-width: 661px),
+  only screen and (min-device-pixel-ratio: 1.25) and (min-width: 661px),
+  only screen and (min-resolution: 120dpi) and (min-width: 661px) {
   .easy-level-deck {
-    width: 570px;
+    width: 530px;
     padding: 10px;
   }
   .easy-level-place {
-    width: 130px;
-    height: 130px;
+    width: 120px;
+    height: 120px;
     margin: 0 10px 10px 0;
   }
   .normal-level-deck {
-    width: 568px;
+    width: 520px;
     padding: 10px;
   }
   .normal-level-place {
-    width: 83px;
-    height: 83px;
+    width: 75px;
+    height: 75px;
     margin: 0 10px 10px 0;
   }
   .hard-level-deck {
-    width: 570px;
+    width: 530px;
     padding: 10px;
   }
   .hard-level-place {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     margin: 0 10px 10px 0;
   }
   .expert-level-deck {
-    width: 570px;
+    width: 530px;
     padding: 10px;
   }
   .expert-level-place {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
     margin: 0 10px 10px 0;
   }
 }
@@ -450,10 +507,6 @@ body {
 }
 
 /* ############### BOARD BACKGROUND ############### */
-
-.board {
-  background-repeat: repeat;
-}
 
 .green-board {
   background-image: url('../img/background/noisy-texture-green.png');
