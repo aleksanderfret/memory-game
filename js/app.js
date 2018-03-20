@@ -6,11 +6,13 @@ const timeControl = document.querySelector('.time');
 const endGameModal = document.querySelector('.end-modal');
 const timeResult = document.querySelector('.time-result');
 const movesResult = document.querySelector('.moves-result');
+const starsResult = document.querySelector('.stars-result');
 const closeModal = document.querySelector('.close-modal');
 const license = document.querySelector('.license');
+const stars = document.querySelectorAll('.star');
 
-// initial varaibles captured from DOM elements
-const initiaLevel = 'expert';
+// initial variables captured from DOM elements
+const initiaLevel = 'normal';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 const initialGameBackground = 'green';
@@ -23,10 +25,11 @@ const settings = {
       label: 'animals',
       directory: 'animals',
       collection: ['ant', 'bat', 'bee', 'bird', 'buffalo', 'butterfly', 'camel', 'camel-1', 'cat', 'caterpillar',
-      'chipmunk', 'cow', 'crab', 'cricket', 'crocodile', 'dog', 'dolphin', 'dove', 'duck', 'eagle',
-      'elephant', 'ewe', 'fish', 'fish-1', 'goat', 'hedgehog', 'hen', 'horse', 'ladybug', 'lizard',
-      'monkey', 'mouse', 'octopus', 'ox', 'pig', 'rabbit', 'ram', 'rat', 'rhinoceros', 'scorpion',
-      'shark', 'shrimp', 'snail', 'snake', 'spider', 'tiger', 'turkey', 'turtle', 'whale', 'whale-1'],
+        'chipmunk', 'cow', 'crab', 'cricket', 'crocodile', 'dog', 'dolphin', 'dove', 'duck', 'eagle',
+        'elephant', 'ewe', 'fish', 'fish-1', 'goat', 'hedgehog', 'hen', 'horse', 'ladybug', 'lizard',
+        'monkey', 'mouse', 'octopus', 'ox', 'pig', 'rabbit', 'ram', 'rat', 'rhinoceros', 'scorpion',
+        'shark', 'shrimp', 'snail', 'snake', 'spider', 'tiger', 'turkey', 'turtle', 'whale', 'whale-1'
+      ],
       license: 'Card illustrations  made by <a href="http://www.freepik.com" class="footer-link" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" class="footer-link" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" class="footer-link" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>'
     },
     food: {
@@ -34,10 +37,11 @@ const settings = {
       label: 'food',
       directory: 'food',
       collection: ['apple', 'baguette', 'banana', 'beans', 'biscuit', 'blueberries', 'boiled', 'bread', 'broccoli', 'cabbage',
-      'candy', 'carrot', 'cauliflower', 'cheese', 'cherries', 'chili', 'chocolate', 'cookies', 'corn', 'cucumber',
-      'doughnut', 'egg', 'garlic', 'grapes', 'hazelnut', 'honey', 'ice-cream', 'jam', 'lemon', 'milk',
-      'onion', 'orange', 'pancakes', 'peach', 'pear', 'peas', 'pineapple', 'pizza', 'potatoes', 'radish',
-      'raspberry', 'salad', 'salami', 'sausage', 'strawberry', 'toast', 'tomato', 'turkey', 'water', 'watermelon' ],
+        'candy', 'carrot', 'cauliflower', 'cheese', 'cherries', 'chili', 'chocolate', 'cookies', 'corn', 'cucumber',
+        'doughnut', 'egg', 'garlic', 'grapes', 'hazelnut', 'honey', 'ice-cream', 'jam', 'lemon', 'milk',
+        'onion', 'orange', 'pancakes', 'peach', 'pear', 'peas', 'pineapple', 'pizza', 'potatoes', 'radish',
+        'raspberry', 'salad', 'salami', 'sausage', 'strawberry', 'toast', 'tomato', 'turkey', 'water', 'watermelon'
+      ],
       license: 'Card illustrations  made by <a href="https://www.flaticon.com/authors/smashicons" class="footer-link" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" class="footer-link" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" class="footer-link" target="_blank">CC 3.0 BY</a>'
     },
     flags: {
@@ -48,7 +52,8 @@ const settings = {
         'colombia', 'cuba', 'czechia', 'denmark', 'egypt', 'finland', 'france', 'germany', 'greece', 'india',
         'ireland', 'israel', 'italy', 'jamaica', 'japan', 'mexico', 'morocco', 'netherlands', 'new-zealand', 'nigeria',
         'norway', 'paraguay', 'peru', 'philippines', 'poland', 'portugal', 'russia', 'saudi-arabia', 'senegal', 'south-africa',
-        'spain', 'sweden', 'switzerland', 'tanzania', 'thailand', 'turkey', 'uganda', 'ukraine', 'united-kingdom', 'united-states'],
+        'spain', 'sweden', 'switzerland', 'tanzania', 'thailand', 'turkey', 'uganda', 'ukraine', 'united-kingdom', 'united-states'
+      ],
       license: 'Card illustrations  made by <a href="http://www.freepik.com" class="footer-link" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" class="footer-link" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" class="footer-link" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>'
     },
     christmas: {
@@ -56,10 +61,11 @@ const settings = {
       label: 'christmas',
       directory: 'christmas',
       collection: ['bauble', 'bauble-1', 'bauble-2', 'bauble-3', 'bauble-4', 'bauble-5', 'bauble-6', 'bauble-7', 'bauble-8', 'bauble-9',
-      'bauble-10', 'bauble-11', 'bauble-12', 'bauble-13', 'baubles', 'bells', 'bells-1', 'bow', 'cabin-2', 'candle',
-      'candle-1', 'candle-2', 'candle-4', 'candy', 'candy-1', 'candy-2', 'candy-3', 'candy-4', 'candy-cane', 'candy-cane-1', 'candy-canes',
-      'christmas-card', 'christmas-card-1', 'christmas-sock', 'christmas-tree', 'christmas-wreath', 'christmas-wreath-1', 'garlands', 'gift', 'gift-1', 'gift-2',
-      'gift-3', 'gingerbread-man', 'lights', 'mistletoe', 'mistletoe-1', 'reindeer', 'santa-claus', 'snow-globe-1', 'snowman'],
+        'bauble-10', 'bauble-11', 'bauble-12', 'bauble-13', 'baubles', 'bells', 'bells-1', 'bow', 'cabin-2', 'candle',
+        'candle-1', 'candle-2', 'candle-4', 'candy', 'candy-1', 'candy-2', 'candy-3', 'candy-4', 'candy-cane', 'candy-cane-1', 'candy-canes',
+        'christmas-card', 'christmas-card-1', 'christmas-sock', 'christmas-tree', 'christmas-wreath', 'christmas-wreath-1', 'garlands', 'gift', 'gift-1', 'gift-2',
+        'gift-3', 'gingerbread-man', 'lights', 'mistletoe', 'mistletoe-1', 'reindeer', 'santa-claus', 'snow-globe-1', 'snowman'
+      ],
       license: 'Card illustrations made by <a href="https://www.flaticon.com/authors/smashicons" class="footer-link" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" class="footer-link" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" class="footer-link" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>'
     }
   },
@@ -82,10 +88,34 @@ const settings = {
     }
   },
   difficultyLevels: {
-    easy: 8,
-    normal: 18,
-    hard: 32,
-    expert: 50
+    easy: {
+      label: 'easy',
+      pairs: 8,
+      limitModifier: 1,
+      threeStarLimit: 16, // 1 * (2*pairs)
+      twoStarLimit: 20, // 1.25 * threeStarLimit
+    },
+    normal: {
+      label: 'normal',
+      pairs: 18,
+      limitModifier: 1.3,
+      threeStarLimit: 47, // 1.3 * (2*pairs)
+      twoStarLimit: 59, // 1.25 * threeStarLimit
+    },
+    hard: {
+      label: 'hard',
+      pairs: 32,
+      limitModifier: 1.9,
+      threeStarLimit: 122, // 1.9 * (2*pairs)
+      twoStarLimit: 152, // 1.25 * threeStarLimit
+    },
+    expert: {
+      label: 'expert',
+      pairs: 50,
+      limitModifier: 1.9,
+      threeStarLimit: 190, // 1.9 * (2*pairs)
+      twoStarLimit: 238, // 1.25 * threeStarLimit
+    }
   },
   gameBoard: {
     background: {
@@ -101,8 +131,8 @@ let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
 let gameBackground = initialGameBackground;
-// Stores the number of pairs remaining to be discovered
-let remainigPairs = settings.difficultyLevels[level];
+// Stores the number of found pairs
+let foundPairs = 0;
 // Stores the first of the two fliped cards
 let currentFirstCard = null;
 // Lets block an event in some cases
@@ -111,6 +141,10 @@ let locked = false;
 let clickCounter = 0;
 // Stores the number of moves
 let move = 0;
+// Stores limits of moves for current game level
+let ratingLimitsForCurrentLevel = calculateRatingLimits();
+// Stores star ratting
+let starRating = 3;
 
 // Variables needed to measure time
 let startTimestamp;
@@ -122,7 +156,7 @@ let seconds = 0;
 let houndreth = 0;
 
 // Checks which property has to be used when animation ends
-const animationEnd = (function(element) {
+const animationEnd = (function (element) {
   const animations = {
     animation: 'animationend',
     OAnimation: 'oAnimationEnd',
@@ -143,6 +177,7 @@ const animationEnd = (function(element) {
 function gameInitHandler() {
   insertPageDate();
   addLicenseInfo();
+  setCurrentRating();
   confiureGame(gameBackground);
   placeCards(reverse, obverse, level);
 }
@@ -179,7 +214,7 @@ function confiureGame(gameBackground) {
  */
 function placeCards(reverseType, obverseType, Level) {
   // Determines the number of pairs
-  const pairsOfCards = settings.difficultyLevels[level];
+  const pairsOfCards = settings.difficultyLevels[level].pairs;
   // Determines proper reverses and directory
   const reversTypeClass = settings.reverseTypes[reverseType].class;
   const cardsDirectory = settings.obverseTypes[obverseType].directory;
@@ -199,7 +234,7 @@ function placeCards(reverseType, obverseType, Level) {
   deck.appendChild(cardList);
 
   // Gives list the appropriate class based on the game level
-  deck.classList.add(level+'-level-deck');
+  deck.classList.add(level + '-level-deck');
 }
 
 /**
@@ -213,7 +248,7 @@ function placeCards(reverseType, obverseType, Level) {
 function createCard(card, reversTypeClass, directory, level) {
   // Creates li - the card container
   const newCardPlace = document.createElement('li');
-  newCardPlace.classList.add('card-place', level+'-level-place');
+  newCardPlace.classList.add('card-place', level + '-level-place');
 
   // Creates div - the card
   const newCard = document.createElement('div');
@@ -259,7 +294,7 @@ function shuffle(array) {
 
 // Flips card on clic event
 deck.addEventListener('click', function flipCard(event) {
-  if (!locked && event.target.dataset.reverse && event.target !== currentFirstCard){
+  if (!locked && event.target.dataset.reverse && event.target !== currentFirstCard) {
     // Checks whether to enable the countdown of time
     if (clickCounter === 0) {
       startTimer();
@@ -277,7 +312,7 @@ deck.addEventListener('click', function flipCard(event) {
       moveControl.textContent = move;
       // Locks this eventlistener for checking time
       locked = true;
-      setTimeout(function(){
+      setTimeout(function () {
         checkPair(currentFirstCard, event.target);
       }, 1200);
     }
@@ -301,14 +336,15 @@ function checkPair(firstCard, secondCard) {
   } else {
     firstCard.parentElement.classList.add('found-pair');
     secondCard.parentElement.classList.add('found-pair');
-    // Decreases the number of remaining pairs
-    remainigPairs--;
-    if(remainigPairs === 0) {
+    // Increase the number of found pairs
+    foundPairs++;
+    if (foundPairs === settings.difficultyLevels[level].pairs) {
       // Stops timer and end game
       stopTimer();
       finishGame();
     }
   }
+  setCurrentRating();
   // Clears first fliped card
   currentFirstCard = null;
   // Unlocks eventListener
@@ -336,10 +372,10 @@ function stopTimer() {
  * @description Measures the time of the game and displays it to the user
  * Inspired by/Taken from: https://jsfiddle.net/Daniel_Hug/pvk6p/
  */
-function stopWatch () {
+function stopWatch() {
   // Calculates the time units
   houndreth++;
-  if(houndreth >= 100) {
+  if (houndreth >= 100) {
     houndreth = 0;
     seconds++;
     if (seconds >= 60) {
@@ -351,10 +387,10 @@ function stopWatch () {
     }
   }
   // Puts current time on the page
-  const currentTime = ((hours < 10) ? "0" : "") + hours + ':'
-                    + ((minutes < 10) ? "0" : "") + minutes + ':'
-                    + ((seconds < 10) ? "0" : "") + seconds + ':'
-                    + ((houndreth < 10) ? "0" : "") + houndreth;
+  const currentTime = ((hours < 10) ? "0" : "") + hours + ':' +
+    ((minutes < 10) ? "0" : "") + minutes + ':' +
+    ((seconds < 10) ? "0" : "") + seconds + ':' +
+    ((houndreth < 10) ? "0" : "") + houndreth;
   timeControl.textContent = currentTime;
 }
 
@@ -365,7 +401,8 @@ function finishGame() {
   const gameTime = timeControl.textContent;
   const gameTimestampDiff = endTimeStamp - startTimestamp;
   const gameMoves = move;
-  displayModal(gameTime, gameMoves);
+  const gameRating = starRating;
+  displayModal(gameTime, gameMoves, gameRating);
   move = 0;
   moveControl.textContent = move;
   timeControl.textContent = '00:00:00:00';
@@ -375,11 +412,19 @@ function finishGame() {
  * @description Shows modal to the user and dispalys him his score
  * @param {string} time
  * @param {number} moves
+ * @param {number} stars
  */
-function displayModal(time, moves) {
+function displayModal(time, moves, stars) {
   endGameModal.classList.add('show-modal');
   timeResult.textContent = timeResult.textContent + time;
   movesResult.textContent = movesResult.textContent + moves;
+  const starElements = document.createDocumentFragment();
+  for (let i = 1; i <= stars; i++) {
+    const star = document.createElement('i');
+    star.classList.add('fas', 'fa-star');
+    starElements.appendChild(star);
+  }
+  starsResult.appendChild(starElements);
 }
 
 // Closes end game modal
@@ -390,4 +435,48 @@ closeModal.addEventListener('click', function hideModal() {
 //Inserts correct contribution info
 function addLicenseInfo() {
   license.innerHTML = settings.obverseTypes[obverse].license;
+}
+
+/**
+ * @description Calculates limits of moves to display proper star rating
+ * @returns {array}
+ */
+function calculateRatingLimits() {
+  // Stores limits of moves for whole game
+  const limitsForStages = [];
+  const pairs = settings.difficultyLevels[level].pairs;
+  const threeStarLimit = settings.difficultyLevels[level].threeStarLimit;
+  const limitModifier = settings.difficultyLevels[level].limitModifier;
+  let remainingLimit = threeStarLimit;
+
+  // Distributes star limits for level per subsequent stages
+  for (let i = 0; i < pairs; i++) {
+    const stageStep = Math.round(Math.sqrt(remainingLimit) * (1 / limitModifier));
+    const stageThreeStarLimit = (i === 0) ? stageStep : stageStep + limitsForStages[i - 1][0];
+    const stageTwoStarLimit = Math.round(1.25 * stageThreeStarLimit);
+    limitsForStages.push([stageThreeStarLimit, stageTwoStarLimit]);
+    remainingLimit -= stageStep;
+  }
+  return limitsForStages;
+}
+
+/**
+ * @description Calculates limits of moves to display proper star rating
+ * @returns {array}
+ */
+function setCurrentRating() {
+  if (move <= ratingLimitsForCurrentLevel[foundPairs][0]) {
+    starRating = 3;
+  } else if (move > ratingLimitsForCurrentLevel[foundPairs][1]) {
+    starRating = 1;
+  } else {
+    starRating = 2;
+  }
+  for (let i = 0; i < stars.length; i++) {
+    if (i < starRating) {
+      stars[i].classList.add('white-star');
+    } else {
+      stars[i].classList.remove('white-star');
+    }
+  }
 }
