@@ -10,6 +10,8 @@ const starsResult = document.querySelector('.stars-result');
 const closeModal = document.querySelector('.close-modal');
 const license = document.querySelector('.license');
 const stars = document.querySelectorAll('.star');
+const playAgain = document.querySelector('.play-again');
+const playNewGame = document.querySelector('.play-new-game');
 
 // initial variables captured from DOM elements
 const initiaLevel = 'normal';
@@ -145,7 +147,6 @@ let move = 0;
 let ratingLimitsForCurrentLevel = calculateRatingLimits();
 // Stores star ratting
 let starRating = 3;
-
 // Variables needed to measure time
 let startTimestamp;
 let endTimeStamp;
@@ -155,7 +156,7 @@ let minutes = 0;
 let seconds = 0;
 let houndreth = 0;
 
-// Checks which property has to be used when animation ends
+// Checks which property has tob e used when animation ends
 const animationEnd = (function (element) {
   const animations = {
     animation: 'animationend',
@@ -171,21 +172,21 @@ const animationEnd = (function (element) {
   }
 })(document.createElement('div'));
 
+
+
+//////////////////// GAME INIT ////////////////////
 /**
  * @description Initiates the game
  */
 function gameInitHandler() {
-  insertPageDate();
-  addLicenseInfo();
-  setCurrentRating();
-  confiureGame(gameBackground);
-  placeCards(reverse, obverse, level);
+  insertCurrentDate();
+  prepareGame();
 }
 
 /**
  * @description Inserts current year to the website footer
  */
-function insertPageDate() {
+function insertCurrentDate() {
   const pageDate = document.querySelector('#years');
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -193,11 +194,51 @@ function insertPageDate() {
   pageDate.textContent = (year > startYear) ? startYear + '–' + year : startYear;
 }
 
+
+
+//////////////////// GAME START ////////////////////
 /**
- * @description Sets the game background
- * @param {string} gameBackground
+ * @description Starts new game
  */
-function confiureGame(gameBackground) {
+function startNewGame() {
+  hideModal();
+  resetGame();
+  prepareGame();
+}
+
+/**
+ * @description Resets game
+ */
+function resetGame() {
+  deck.innerHTML = '';
+  resetStopwatch();
+  endTimeStamp = 0;
+  startTimestamp = 0;
+  clickCounter = 0;
+  move = 0;
+  moveControl.textContent = move;
+  timeControl.textContent = '00:00:00:00';
+  currentFirstCard = null;
+  locked = false;
+  foundPairs = 0;
+  starRating = 3;
+}
+
+/**
+ * @description Prepares game
+ */
+function prepareGame() {
+  confiureGame();
+  placeCards(reverse, obverse, level);
+  setCurrentRating();
+}
+
+/**
+ * @description Sets the game options
+ */
+// TODO Implement user options for configuring
+function confiureGame() {
+  insertImagesLicenseInfo();
   const board = document.querySelector('body');
   const currentClass = board.getAttribute('class');
   if (currentClass) {
@@ -206,6 +247,20 @@ function confiureGame(gameBackground) {
   board.classList.add(settings.gameBoard.background[gameBackground]);
 }
 
+/**
+ * @description Insert proper image contribution
+ */
+function insertImagesLicenseInfo() {
+  license.innerHTML = settings.obverseTypes[obverse].license;
+}
+
+// Starts new game on buttons click
+playNewGame.addEventListener('click', startNewGame);
+playAgain.addEventListener('click', startNewGame);
+
+
+
+//////////////////// CREATE, SHUFFLE AND PLACE CARD ////////////////////
 /**
  * @description Puts the shuffled cards on the board
  * @param {string} reverseType
@@ -219,7 +274,7 @@ function placeCards(reverseType, obverseType, Level) {
   const reversTypeClass = settings.reverseTypes[reverseType].class;
   const cardsDirectory = settings.obverseTypes[obverseType].directory;
   // Randomly chooses cards and limits their number according to the game level
-  const cards = shuffle(settings.obverseTypes[obverseType].collection).splice(0, pairsOfCards);
+  const cards = shuffle(settings.obverseTypes[obverseType].collection).slice(0, pairsOfCards);
   // Doubles the cards to creates pairs and shuffle them
   const doubleShuffleCards = shuffle(cards.concat(cards));
   // Creates a new empty DocumentFragment
@@ -232,7 +287,6 @@ function placeCards(reverseType, obverseType, Level) {
   }
   // Adds filled DocumentFragment (cardList) to the DOM
   deck.appendChild(cardList);
-
   // Gives list the appropriate class based on the game level
   deck.classList.add(level + '-level-deck');
 }
@@ -292,6 +346,9 @@ function shuffle(array) {
   });
 }
 
+
+
+//////////////////// SEARCHING FOR PAIRS ////////////////////
 // Flips card on clic event
 deck.addEventListener('click', function flipCard(event) {
   if (!locked && event.target.dataset.reverse && event.target !== currentFirstCard) {
@@ -328,33 +385,40 @@ function checkPair(firstCard, secondCard) {
   // Gets data-card attribute to comparing cards
   const firstCardData = firstCard.getAttribute('data-card');
   const secondCardData = secondCard.getAttribute('data-card');
+
   // Compares cards
   if (firstCardData !== secondCardData) {
-    // Covers fliped cards
+    // TODO add animations
     firstCard.parentElement.classList.remove('fliped-card');
     secondCard.parentElement.classList.remove('fliped-card');
+    setCurrentRating();
   } else {
+    // TODO add animations
     firstCard.parentElement.classList.add('found-pair');
     secondCard.parentElement.classList.add('found-pair');
     // Increase the number of found pairs
     foundPairs++;
+    setCurrentRating();
     if (foundPairs === settings.difficultyLevels[level].pairs) {
-      // Stops timer and end game
-      stopTimer();
+      // Ends game
       finishGame();
     }
   }
-  setCurrentRating();
+
   // Clears first fliped card
   currentFirstCard = null;
   // Unlocks eventListener
   locked = false;
 }
 
+
+
+//////////////////// TIME MEASUREMENT FEATURE ////////////////////
 /**
  * @description Turns on the stopwatch and captures the initial timestamp
  */
 function startTimer() {
+  // Saves timestamp for best scores tabele (future feature)
   startTimestamp = Date.now();
   interval = setInterval(stopWatch, 10);
 }
@@ -363,10 +427,10 @@ function startTimer() {
  * @description Turns off the stopwatch and captures the final timestamp
  */
 function stopTimer() {
+  // Saves timestamp for best scores tabele (future feature)
   endTimeStamp = Date.now();
-  clearInterval(interval);
+  resetStopwatch();
 }
-
 
 /**
  * @description Measures the time of the game and displays it to the user
@@ -395,17 +459,30 @@ function stopWatch() {
 }
 
 /**
- * @description Ends game, resets timer and moves number and dispays modal
+ * @description Resets stopwatch and its variables
+ */
+function resetStopwatch() {
+  clearInterval(interval);
+  houndreth = 0;
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+}
+
+
+
+//////////////////// FINISH GAME ////////////////////
+/**
+ * @description Ends game, dispays modal and resets game controls
  */
 function finishGame() {
+  stopTimer();
   const gameTime = timeControl.textContent;
+  // gameTimestampDiff for best scores tabele (future feature)
   const gameTimestampDiff = endTimeStamp - startTimestamp;
   const gameMoves = move;
   const gameRating = starRating;
   displayModal(gameTime, gameMoves, gameRating);
-  move = 0;
-  moveControl.textContent = move;
-  timeControl.textContent = '00:00:00:00';
 }
 
 /**
@@ -427,16 +504,19 @@ function displayModal(time, moves, stars) {
   starsResult.appendChild(starElements);
 }
 
-// Closes end game modal
-closeModal.addEventListener('click', function hideModal() {
-  endGameModal.classList.remove('show-modal');
-});
+// Closes modal
+closeModal.addEventListener('click', hideModal);
 
-//Inserts correct contribution info
-function addLicenseInfo() {
-  license.innerHTML = settings.obverseTypes[obverse].license;
+/**
+ * @description Hide modal
+ */
+function hideModal() {
+  endGameModal.classList.remove('show-modal');
 }
 
+
+
+//////////////////// STAR RATING FEATURE ////////////////////
 /**
  * @description Calculates limits of moves to display proper star rating
  * @returns {array}
@@ -465,9 +545,10 @@ function calculateRatingLimits() {
  * @returns {array}
  */
 function setCurrentRating() {
-  if (move <= ratingLimitsForCurrentLevel[foundPairs][0]) {
+  const index = (foundPairs>=ratingLimitsForCurrentLevel.length) ? (ratingLimitsForCurrentLevel.length - 1) : foundPairs;
+  if (move <= ratingLimitsForCurrentLevel[index][0]) {
     starRating = 3;
-  } else if (move > ratingLimitsForCurrentLevel[foundPairs][1]) {
+  } else if (move > ratingLimitsForCurrentLevel[index][1]) {
     starRating = 1;
   } else {
     starRating = 2;
