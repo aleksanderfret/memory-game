@@ -575,6 +575,7 @@ function calculateRatingLimits() {
     limitsForStages.push([stageThreeStarLimit, stageTwoStarLimit]);
     remainingLimit -= stageStep;
   }
+  console.log(limitsForStages);
   return limitsForStages;
 }
 
