@@ -18,7 +18,7 @@
   <div id="game" class="game">
     <section id="panel" class="panel">
       <ul class="game-status">
-        <li><button id="play-new-game" class="game-button play-new-game"><i class="fas fa-undo-alt"></i></button></li>
+        <li><button id="play-new-game" class="game-button play-new-game"><i class="fas fa-sync-alt"></i></button></li>
         <li><span id="stopwatch" class="stopwatch"><i class="fas fa-stopwatch"></i><span class="time">00:00:00:00</span></span></li>
         <li><span id="moves" class="moves"><i class="fas fa-mouse-pointer"></i><span class="moves-number">0</span></span></li>
         <li>
@@ -28,6 +28,51 @@
         <li><button id="settings" class="game-button settings"><i class="fas fa-cog"></i></button></li>
       </ul>
     </section>
+    <section id="settings-panel" class="settings-panel">
+			<h2 class="settings-title">Settings</h2>
+			<ul id="options" class="options">
+        <li class="option">
+          <h3 class="option-title">Levels</h3>
+          <div class="level-options">
+            <button class="text-option" data-level="easy">easy</button>
+            <button class="text-option" data-level="normal">normal</button>
+            <button class="text-option" data-level="hard">hard</button>
+            <button class="text-option" data-level="expert">expert</button>
+          </div>
+        </li>
+			<li class="option">
+				<h3 class="option-title">Themes</h3>
+				<div class="theme-options">
+					<button class="img-option" data-theme="flags"><img src="img/flags/poland.svg"></button>
+					<button class="img-option" data-theme="christmas"><img src="img/christmas/snowman.svg"></button>
+					<button class="img-option" data-theme="food"><img src="img/food/watermelon.svg"></button>
+					<button class="img-option" data-theme="animals"><img src="img/animals/whale.svg"></button>
+				</div>
+			</li>
+			<li class="option">
+				<h3 class="option-title">Reverses</h3>
+				<div class="reverse-options">
+					<button class="img-option" data-reverse="blue"><img src="img/buttons/blue-reverse-btn.png"></button>
+					<button class="img-option" data-reverse="green"><img src="img/buttons/green-reverse-btn.png"></button>
+					<button class="img-option" data-reverse="red"><img src="img/buttons/red-reverse-btn.png"></button>
+					<button class="img-option" data-reverse="grey"><img src="img/buttons/grey-reverse-btn.png"></button>
+				</div>
+			</li>
+			<li class="option">
+				<h3 class="option-title">Backgrounds</h3>
+				<div class="background-options">
+					<button class="img-option" data-background="blue"><img src="img/background/noisy-texture-blue.png"></button>
+					<button class="img-option" data-background="green"><img src="img/background/noisy-texture-green.png"></button>
+					<button class="img-option" data-background="red"><img src="img/background/noisy-texture-red.png"></button>
+				</div>
+			</li>
+			</ul>
+			<div class="options-controls">
+				<button class="apply game-button"><i class="fas fa-check"></i></button>
+				<button class="reset game-button"><i class="fas fa-undo-alt"></i></button>
+				<button class="cancel game-button"><i class="fas fa-times"></i></button>
+			</div>
+		</section>
     <section id="game-board" class="game-board">
       <ul id="deck" class="deck">
       </ul>
@@ -52,7 +97,7 @@
         <li>Number of moves: <span class="moves-result"></span></li>
         <li>Play again: <button id="play-again" class="play-again"><i class="fas fa-gamepad"></i></button></li>
       </ul>
-      <button id="close-modal" class="close-modal"><i class="far fa-window-close close-icon"></i></button>
+      <button id="close-modal" class="close-modal"><i class="fas fa-times close-icon"></i></button>
     </div>
   </div>
   <script src="js/app.js"></script>

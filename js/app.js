@@ -12,12 +12,18 @@ const license = document.querySelector('.license');
 const stars = document.querySelectorAll('.star');
 const playAgain = document.querySelector('.play-again');
 const playNewGame = document.querySelector('.play-new-game');
+const gameSettings = document.querySelector('#settings-panel');
+const settingsButton = document.querySelector('#settings');
+const cancelButton = document.querySelector('.cancel');
+const applyButton = document.querySelector('.apply');
+const resetlButton = document.querySelector('.reset');
+const options = document.querySelector('.options');
 
 // initial variables captured from DOM elements
 const initiaLevel = 'normal';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
-const initialGameBackground = 'green';
+const initialBackground = 'green';
 
 // game settings object
 const settings = {
@@ -132,7 +138,12 @@ const settings = {
 let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
-let gameBackground = initialGameBackground;
+let background = initialBackground;
+// Sets variable needed at settings panel
+let selectedLevel = initiaLevel;
+let selectedObverse = initialObverse;
+let selectedReverse = initialReverse;
+let selectedBackground = initialBackground;
 // Stores the number of found pairs
 let foundPairs = 0;
 // Stores the first of the two fliped cards
@@ -228,23 +239,49 @@ function resetGame() {
  * @description Prepares game
  */
 function prepareGame() {
-  confiureGame();
+  insertImagesLicenseInfo();
+  configureGame();
   placeCards(reverse, obverse, level);
   setCurrentRating();
 }
 
 /**
+ * @description Configures settings panel
+ */
+function configureSettingsPanel() {
+  const selectedLevelButton = options.querySelector('[data-level="' + selectedLevel + '"]');
+  const selectedObverseButton = options.querySelector('[data-theme="' + selectedObverse + '"]');
+  const selectedReverseButton = options.querySelector('[data-reverse="' + selectedReverse + '"]');
+  const selectedBackgroundButton = options.querySelector('[data-background="' + selectedBackground + '"]');
+
+  selectedLevelButton.classList.remove('selected');
+  selectedObverseButton.classList.remove('selected');
+  selectedReverseButton.classList.remove('selected');
+  selectedBackgroundButton.classList.remove('selected');
+
+  const levelButton = options.querySelector('[data-level="' + level + '"]');
+  const obverseButton = options.querySelector('[data-theme="' + obverse + '"]');
+  const reverseButton = options.querySelector('[data-reverse="' + reverse + '"]');
+  const backgroundButton = options.querySelector('[data-background="' + background + '"]');
+
+  levelButton.classList.add('selected');
+  obverseButton.classList.add('selected');
+  reverseButton.classList.add('selected');
+  backgroundButton.classList.add('selected');
+}
+
+/**
  * @description Sets the game options
  */
-// TODO Implement user options for configuring
-function confiureGame() {
-  insertImagesLicenseInfo();
+function configureGame() {
+  configureSettingsPanel();
   const board = document.querySelector('body');
   const currentClass = board.getAttribute('class');
+
   if (currentClass) {
     board.classList.remove(currentClass);
   }
-  board.classList.add(settings.gameBoard.background[gameBackground]);
+  board.classList.add(settings.gameBoard.background[background]);
 }
 
 /**
@@ -493,8 +530,9 @@ function finishGame() {
  */
 function displayModal(time, moves, stars) {
   endGameModal.classList.add('show-modal');
-  timeResult.textContent = timeResult.textContent + time;
-  movesResult.textContent = movesResult.textContent + moves;
+  starsResult.innerHTML = '';
+  timeResult.textContent = time;
+  movesResult.textContent = moves;
   const starElements = document.createDocumentFragment();
   for (let i = 1; i <= stars; i++) {
     const star = document.createElement('i');
@@ -561,3 +599,95 @@ function setCurrentRating() {
     }
   }
 }
+
+
+
+//////////////////// SETTING PANEL FEATURE ////////////////////
+// Shows setting panel on cutton click
+settingsButton.addEventListener('click', addSettingsPanel);
+
+// Changes game options
+options.addEventListener('click', function chooseOption(event) {
+  let button;
+  if (event.target.parentElement.nodeName === 'BUTTON') {
+    button = event.target.parentElement;
+  } else if (event.target.nodeName === 'BUTTON') {
+    button = event.target;
+  } else {
+    return;
+  }
+  //Turns off previous selected button
+  const previousSelected = button.parentElement.querySelector('.selected');
+  if (previousSelected !== null) {
+    previousSelected.classList.remove('selected');
+  }
+  button.classList.add('selected');
+  //Choose dataset key
+  const currentOption = Object.keys(button.dataset)[0];
+  // Basing on dataset key sets proper game option
+  switch(currentOption) {
+    case 'level':
+       selectedLevel = button.dataset.level;
+      break;
+    case 'theme':
+      selectedObverse = button.dataset.theme;
+      break;
+    case 'reverse':
+      selectedReverse = button.dataset.reverse;
+      break;
+    case 'background':
+      selectedBackground = button.dataset.background;
+      break;
+    default:
+      null;
+  }
+});
+
+//Applies selected option
+applyButton.addEventListener('click', function applyOptions() {
+  // Removes old class depending on previous game level
+  deck.classList.remove(level + '-level-deck');
+  ratingLimitsForCurrentLevel = calculateRatingLimits();
+  level = selectedLevel;
+  obverse = selectedObverse;
+  reverse = selectedReverse;
+  background = selectedBackground;
+  startNewGame();
+  removeSettingsPanel();
+});
+
+// Resets selected game options
+resetlButton.addEventListener('click', function resetOptions() {
+  configureSettingsPanel();
+  resetSelectedOptions();
+});
+
+// Resets selected options and hides settings panel
+cancelButton.addEventListener('click', function cancelOptions() {
+  configureSettingsPanel();
+  resetSelectedOptions();
+  removeSettingsPanel();
+});
+
+// Resetes variable with selected options
+function resetSelectedOptions() {
+  selectedLevel = level;
+  selectedObverse = obverse;
+  selectedReverse = reverse;
+  selectedBackground = background;
+}
+
+//Shows settings panel
+function addSettingsPanel() {
+  gameSettings.classList.add('open');
+}
+
+//Hides settings panel
+function removeSettingsPanel(){
+  gameSettings.classList.remove('open');
+}
+
+
+
+
+

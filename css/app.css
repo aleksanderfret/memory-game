@@ -144,6 +144,7 @@ table {
 body {
   font: normal normal 300 16px/1.2em "Ubuntu";
   background-repeat: repeat;
+  overflow-x: hidden;
 }
 
 .game{
@@ -202,6 +203,9 @@ body {
   align-items: center;
   font-size: 1.1em;
 }
+.game-button {
+  cursor: pointer;
+}
 
 .game-button,
 .stopwatch,
@@ -211,6 +215,11 @@ body {
   color: #fff;
   font-size: 1em;
   padding: 0.7em;
+}
+
+.game-button:hover {
+	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+	transform: scale(1.2);
 }
 
 .stopwatch .fas,
@@ -419,7 +428,7 @@ body {
 }
 
 @media
-  only screen and (-webkit-min-device-pixel-ratio: 1.25) and (min-width: 6661x),
+  only screen and (-webkit-min-device-pixel-ratio: 1.25) and (min-width: 661x),
   only screen and (min--moz-device-pixel-ratio: 1.25) and (min-width: 661px),
   only screen and (-o-min-device-pixel-ratio: 1.25) and (min-width: 661px),
   only screen and (min-device-pixel-ratio: 1.25) and (min-width: 661px),
@@ -613,6 +622,7 @@ body {
   border: none;
   background: none;
   padding-left: 0.5em;
+  cursor: pointer;
 }
 
 
@@ -629,6 +639,7 @@ body {
 }
 
 .close-modal {
+  cursor: pointer;
   position: absolute;
   font-size: 1.2em;
   padding: 0.5em;
@@ -638,7 +649,7 @@ body {
   right: 0;
 }
 
-.close-modal:hover .far {
+.close-modal:hover .fas {
   transform: scale(1.2);
 }
 
@@ -707,4 +718,98 @@ body {
   .game-end-message {
     width: 40%;
   }
+}
+
+
+/* ############### SETTING PANEL ############### */
+.settings-panel {
+	width: 300px;
+	background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+	position: absolute;
+	right: 0;
+	height: 100%;
+	z-index: 10;
+	transform: translate(300px, 0);
+  transition: transform 0.5s ease;
+  box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.75);
+  text-align: center;
+}
+
+.open {
+  transform: translate(0, 0);
+}
+
+.settings-title {
+  padding: 1.5em;
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+.option-title {
+  font-size: 1.3em;
+  padding: 1em;
+}
+
+.options button {
+  padding: 0;
+  border: none;
+}
+
+.options button img {
+  display: block;
+  width: 50px;
+  border-radius: 2px;
+}
+
+.level-options,
+.reverse-options,
+.theme-options,
+.background-options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0 0 2em 0;
+}
+
+.text-option,
+.img-option {
+  display: block;
+  border-radius: 2px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.theme-options .img-option {
+  box-sizing: border-box;
+  background-color: #fff;
+  border: 2px solid #fff;
+}
+
+
+.text-option {
+  background-color:  #fff;
+  width: 50px;
+  height: 50px;
+}
+
+.selected {
+  transform: scale(0.8);
+  box-shadow: 0px 0px 15px 0 rgba(255, 255, 255, 1);
+}
+
+.text-option:hover,
+.img-option:hover {
+  transform: scale(1.2);
+  box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.75);
+}
+
+.selected:hover {
+  transform: scale(0.8);
+  box-shadow: 0px 0px 15px 0 rgba(255, 255, 255, 1);
+}
+
+.options-controls {
+  font-size: 1.5em;
 }
