@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', gameInitHandler);
+
 // DOM elements
 const deck = document.querySelector('#deck');
 const moveControl = document.querySelector('.moves-number');
@@ -19,7 +20,7 @@ const applyButton = document.querySelector('.apply');
 const resetlButton = document.querySelector('.reset');
 const options = document.querySelector('.options');
 
-// game settings object
+// Game settings object
 const settings = {
   obverseTypes: {
     animals: {
@@ -94,28 +95,28 @@ const settings = {
       label: 'easy',
       pairs: 8,
       limitModifier: 1,
-      threeStarLimit: 16, // 1 * (2*pairs)
+      threeStarLimit: 16, // limitModifier * (2*pairs)
       twoStarLimit: 20, // 1.25 * threeStarLimit
     },
     normal: {
       label: 'normal',
       pairs: 18,
       limitModifier: 1.3,
-      threeStarLimit: 47, // 1.3 * (2*pairs)
+      threeStarLimit: 47, // limitModifier * (2*pairs)
       twoStarLimit: 59, // 1.25 * threeStarLimit
     },
     hard: {
       label: 'hard',
       pairs: 32,
       limitModifier: 1.9,
-      threeStarLimit: 122, // 1.9 * (2*pairs)
+      threeStarLimit: 122, // limitModifier * (2*pairs)
       twoStarLimit: 152, // 1.25 * threeStarLimit
     },
     expert: {
       label: 'expert',
       pairs: 50,
       limitModifier: 1.9,
-      threeStarLimit: 190, // 1.9 * (2*pairs)
+      threeStarLimit: 190, // limitModifier * (2*pairs)
       twoStarLimit: 238, // 1.25 * threeStarLimit
     }
   },
@@ -127,44 +128,51 @@ const settings = {
     }
   }
 }
-// initial variables
+// Initial values
 const initiaLevel = 'normal';
 const initialReverse = 'blue';
 const initialObverse = 'flags';
 const initialBackground = 'green';
-// Sets current variable with initial values
+
+// Sets current values to initial values
 let level = initiaLevel;
 let reverse = initialReverse;
 let obverse = initialObverse;
 let background = initialBackground;
-// Sets variable needed at settings panel
+
+// Sets variables for settings panel
 let selectedLevel = initiaLevel;
 let selectedObverse = initialObverse;
 let selectedReverse = initialReverse;
 let selectedBackground = initialBackground;
+
+// Game status variables
+// Used for blocking card clicking during pair checking
+let locked = false;
 // Stores the number of found pairs
 let foundPairs = 0;
 // Stores the first of the two flipped cards
 let currentFirstCard = null;
-// Is used for blocking card clicking during pair checking
-let locked = false;
 // Stores the number of clicks
 let clickCounter = 0;
 // Stores the number of moves
 let move = 0;
-// Stores limits of moves for current game level
-let ratingLimitsForCurrentLevel = calculateRatingLimits();
-// Stores star ratting
+// Stores star rating
 let starRating = 3;
-// Variables needed to measure time
-let startTimestamp;
-let endTimeStamp;
+// Variables for time measurement
 let interval;
 let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let houndreth = 0;
-// Set animations type
+// TODO for future use (saving best scores)
+let startTimestamp;
+let endTimeStamp;
+
+// Stores limits of moves by stages used for rating feature
+let ratingLimitsForCurrentLevel = calculateRatingLimits();
+
+// Animation types
 const notFoundPairAnimation = 'wobble';
 const foundPairAnimation = 'tada';
 
@@ -287,7 +295,7 @@ function configureGame() {
 }
 
 /**
- * @description Insert proper image contribution
+ * @description Inserts information about images origin
  */
 function insertImagesLicenseInfo() {
   license.innerHTML = settings.obverseTypes[obverse].license;
@@ -299,7 +307,7 @@ playAgain.addEventListener('click', startNewGame);
 
 
 
-//////////////////// CREATE, SHUFFLE AND PLACE CARD ////////////////////
+//////////////////// CREATE, SHUFFLE AND PLACE CARDS ////////////////////
 /**
  * @description Puts the shuffled cards on the board
  * @param {string} reverseType
@@ -312,22 +320,21 @@ function placeCards(reverseType, obverseType, Level) {
   // Determines proper reverses and directory
   const reversTypeClass = settings.reverseTypes[reverseType].class;
   const cardsDirectory = settings.obverseTypes[obverseType].directory;
-  // Randomly chooses cards and limits their number according to the game level
+  // Randomly chooses cards, then limits their number according to the game level
   const cards = shuffle(settings.obverseTypes[obverseType].collection).slice(0, pairsOfCards);
-  // Doubles the cards to creates pairs and shuffle them
+  // Doubles the cards to create pairs, then shuffles them
   const doubleShuffleCards = shuffle(cards.concat(cards));
-  // Creates a new empty DocumentFragment
-  const cardList = document.createDocumentFragment();
 
-  // For each card creates new DOM element and adds it to the DocumentFragment (cardList)
+  const cardList = document.createDocumentFragment();
+  // Populates cardList with newly created cards
   for (card of doubleShuffleCards) {
     const newCard = createCard(card, reversTypeClass, cardsDirectory, level);
     cardList.appendChild(newCard);
   }
-  // Adds filled DocumentFragment (cardList) to the DOM
-  deck.appendChild(cardList);
-  // Gives list the appropriate class based on the game level
+
+  // Adds the appropriate class tothe list based on the game level
   deck.classList.add(level + '-level-deck');
+  deck.appendChild(cardList);
 }
 
 /**
@@ -339,37 +346,35 @@ function placeCards(reverseType, obverseType, Level) {
  * @return {object}
  */
 function createCard(card, reversTypeClass, directory, level) {
-  // Creates li - the card container
+  // Creates the card container
   const newCardPlace = document.createElement('li');
   newCardPlace.classList.add('card-place', level + '-level-place');
 
-  // Creates div - the card
+  // Creates the card
   const newCard = document.createElement('div');
   newCard.classList.add('card');
 
-  // Creates div - the reverse of the card
+  // Creates the reverse of the card
   const newReverse = document.createElement('div');
   newReverse.classList.add('reverse', reversTypeClass);
   newReverse.setAttribute('data-card', card);
   newReverse.setAttribute('data-reverse', true);
 
-  // Creates div - the obverse of the card
+  // Creates the obverse of the card
   const newObverse = document.createElement('div');
   newObverse.classList.add('reverse', 'obverse');
   newObverse.setAttribute('data-card', card);
 
-  // Creates img - the image of the card
+  // Creates the image of the card
   const obverseImage = document.createElement('img');
   obverseImage.classList.add('card-image');
   obverseImage.setAttribute('src', ('img/' + directory + '/' + card + '.svg'));
 
-  // Folds the card from individual elements
   newObverse.appendChild(obverseImage);
   newCard.appendChild(newReverse);
   newCard.appendChild(newObverse);
   newCardPlace.appendChild(newCard);
 
-  // returns card containeir
   return newCardPlace;
 }
 
@@ -388,22 +393,22 @@ function shuffle(array) {
 
 
 //////////////////// SEARCHING FOR PAIRS ////////////////////
-// Flips card on clic event
+// Flips card on click event
 deck.addEventListener('click', function flipCard(event) {
   if (!locked && event.target.dataset.reverse && event.target !== currentFirstCard) {
     // Checks whether to enable the countdown of time
     if (clickCounter === 0) {
       startTimer();
     }
-    // Counts clicks
+
     clickCounter++;
     // Flips the card
     event.target.parentElement.classList.add('flipped-card');
-    // Checks which card was flipped
     if (!currentFirstCard) {
+      // Saves first of two flipped card
       currentFirstCard = event.target;
     } else {
-      // Counts moves and dispaly their number to the user
+      // For second flipped card update game controls and check pair
       move++;
       moveControl.textContent = move;
       locked = true;
@@ -413,23 +418,24 @@ deck.addEventListener('click', function flipCard(event) {
 });
 
 /**
- * @description Checks whether the flipped cards are a pair
+ * @description Checks whether the flipped cards are valid pair
  * @param {object} firstCard
  * @param {object} secondCard
  */
 function checkPair(firstCard, secondCard) {
-  // Gets data-card attribute to comparing cards
   const firstCardData = firstCard.getAttribute('data-card');
   const secondCardData = secondCard.getAttribute('data-card');
 
-  // Compares cards
   if (firstCardData !== secondCardData) {
+    // Runs proper cards animation and updates rating
     animateCards(firstCard, secondCard, false);
     setCurrentRating();
   } else {
+    // Runs proper cards animation, updates foundPairs and rating
     animateCards(firstCard, secondCard, true);
     foundPairs++;
     setCurrentRating();
+    // Ends game
     if (foundPairs === settings.difficultyLevels[level].pairs) {
       finishGame();
     }
@@ -450,24 +456,25 @@ function animateCards(firstCard, secondCard, isPairFound) {
   // Turns on proper animation
   firstCard.parentElement.parentElement.classList.add('animated', animationStyle);
   secondCard.parentElement.parentElement.classList.add('animated', animationStyle);
-  // Adds animation end handler
+  // Adds animation end handlers
   firstCard.parentElement.parentElement.addEventListener(animationEnd, animationEndHandler);
   secondCard.parentElement.parentElement.addEventListener(animationEnd, animationEndHandler);
 
-/**
- * @description Turns off animation styles, covers wrong cards or marks found pair
- * @param {Object} eveny
- */
+  /**
+   * @description Cleanup after animation, covers wrong cards or marks found pair
+   * @param {Object} eveny
+   */
   function animationEndHandler(event) {
     event.target.classList.remove('animated', animationStyle);
+    event.target.removeEventListener(animationEnd, animationEndHandler);
+
     const card = event.target.childNodes[0];
     if (isPairFound) {
       card.classList.add('found-pair');
     } else {
       card.classList.remove('flipped-card');
     }
-    // Removes itself from DOM object
-    event.target.removeEventListener(animationEnd, animationEndHandler);
+
     locked = false;
   }
 }
@@ -476,19 +483,17 @@ function animateCards(firstCard, secondCard, isPairFound) {
 
 //////////////////// TIME MEASUREMENT FEATURE ////////////////////
 /**
- * @description Turns on the stopwatch and captures the initial timestamp
+ * @description Turns on the stopwatch and captures the initial timestamp for best scores tabele (future feature)
  */
 function startTimer() {
-  // Saves timestamp for best scores tabele (future feature)
   startTimestamp = Date.now();
   interval = setInterval(stopWatch, 10);
 }
 
 /**
- * @description Turns off the stopwatch and captures the final timestamp
+ * @description Turns off the stopwatch and captures the final timestamp for best scores tabele (future feature)
  */
 function stopTimer() {
-  // Saves timestamp for best scores tabele (future feature)
   endTimeStamp = Date.now();
   resetStopwatch();
 }
@@ -498,7 +503,6 @@ function stopTimer() {
  * Inspired by/Taken from: https://jsfiddle.net/Daniel_Hug/pvk6p/
  */
 function stopWatch() {
-  // Calculates the time units
   houndreth++;
   if (houndreth >= 100) {
     houndreth = 0;
@@ -543,11 +547,13 @@ function finishGame() {
   const gameTimestampDiff = endTimeStamp - startTimestamp;
   const gameMoves = move;
   const gameRating = starRating;
-  displayModal(gameTime, gameMoves, gameRating);
+  setTimeout(function(){
+    displayModal(gameTime, gameMoves, gameRating);
+  }, 1500);
 }
 
 /**
- * @description Shows modal to the user and dispalys him his score
+ * @description Shows modal to the user
  * @param {string} time
  * @param {number} moves
  * @param {number} stars
@@ -566,7 +572,7 @@ function displayModal(time, moves, stars) {
   starsResult.appendChild(starElements);
 }
 
-// Closes modal
+// Hides modal on click
 closeModal.addEventListener('click', hideModal);
 
 /**
@@ -580,11 +586,10 @@ function hideModal() {
 
 //////////////////// STAR RATING FEATURE ////////////////////
 /**
- * @description Calculates limits of moves to display proper star rating
+ * @description Calculates limits of moves by stages used for rating feature
  * @returns {array}
  */
 function calculateRatingLimits() {
-  // Stores limits of moves for whole game
   const limitsForStages = [];
   const pairs = settings.difficultyLevels[level].pairs;
   const threeStarLimit = settings.difficultyLevels[level].threeStarLimit;
@@ -603,7 +608,7 @@ function calculateRatingLimits() {
 }
 
 /**
- * @description Calculates limits of moves to display proper star rating
+ * @description Sets proper star rating value
  * @returns {array}
  */
 function setCurrentRating() {
@@ -627,7 +632,7 @@ function setCurrentRating() {
 
 
 //////////////////// SETTING PANEL FEATURE ////////////////////
-// Shows setting panel on cutton click
+// Shows setting panel on button click
 settingsButton.addEventListener('click', addSettingsPanel);
 
 // Changes game options
@@ -646,9 +651,10 @@ options.addEventListener('click', function chooseOption(event) {
     previousSelected.classList.remove('selected');
   }
   button.classList.add('selected');
-  //Choose dataset key
+
+  //Gets dataset key
   const currentOption = Object.keys(button.dataset)[0];
-  // Basing on dataset key sets proper game option
+  // Sets proper game option
   switch (currentOption) {
     case 'level':
       selectedLevel = button.dataset.level;
@@ -671,11 +677,11 @@ options.addEventListener('click', function chooseOption(event) {
 applyButton.addEventListener('click', function applyOptions() {
   // Removes old class depending on previous game level
   deck.classList.remove(level + '-level-deck');
-  ratingLimitsForCurrentLevel = calculateRatingLimits();
   level = selectedLevel;
   obverse = selectedObverse;
   reverse = selectedReverse;
   background = selectedBackground;
+  ratingLimitsForCurrentLevel = calculateRatingLimits();
   startNewGame();
   removeSettingsPanel();
 });
@@ -693,7 +699,7 @@ cancelButton.addEventListener('click', function cancelOptions() {
   removeSettingsPanel();
 });
 
-// Resetes variable with selected options
+// Resetes variables with selected options
 function resetSelectedOptions() {
   selectedLevel = level;
   selectedObverse = obverse;
