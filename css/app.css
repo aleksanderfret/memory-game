@@ -480,15 +480,15 @@ body {
   transform-style: preserve-3d;
   transition: all 0.5s ease;
   border-radius: 2px;
-  box-shadow: 3px 3px 7px 0 rgba(0, 0, 0, 0.3);
 }
 
-.fliped-card {
+.flipped-card {
   transform: rotateY(180deg);
   transition: all 1s ease;
 }
 
 .reverse {
+  cursor: pointer;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -496,17 +496,18 @@ body {
   backface-visibility: hidden;
   border-radius: 2px;
   box-shadow:
+    3px 3px 7px 0 rgba(0, 0, 0, 0.3),
     inset 2px 2px 2px rgba(255, 255, 255, 0.3),
     inset -2px -2px 2px rgba(0, 0, 0, 0.3);
-  /* border: 5px solid rgba(255, 255, 255, 0.25); */
   background-position: center, center;
   background-repeat: no-repeat;
 }
 
 .reverse.obverse {
   display: block;
-  transform: rotateY(180deg);
+  transform: rotateY(-180deg);
   box-sizing: border-box;
+  backface-visibility: hidden;
   padding: 2px;
   border-radius: 2px;
   background-color: #fff;
@@ -516,13 +517,22 @@ body {
 .found-pair {
   transition: all 0.1s ease-in;
   box-shadow: none;
-  width: 94%;
-  height: 94%;
-  margin: 3%;
+  width: 90%;
+  height: 90%;
+  margin: 5%;
 }
 
 .found-pair img {
-  opacity: 0.6;
+  opacity: 0.8;
+}
+
+.found-pair > * {
+  cursor: initial;
+	opacity: 0.5;
+	box-shadow: none;
+	box-shadow:
+    inset 2px 2px 2px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* ############### BOARD BACKGROUND ############### */
@@ -812,4 +822,13 @@ body {
 
 .options-controls {
   font-size: 1.5em;
+}
+
+/* ############### VENDOR STYLES OVERWRITTEN ############### */
+.animated {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  animation-delay: 0.5s;
 }

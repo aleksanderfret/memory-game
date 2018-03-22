@@ -19,12 +19,6 @@ const applyButton = document.querySelector('.apply');
 const resetlButton = document.querySelector('.reset');
 const options = document.querySelector('.options');
 
-// initial variables captured from DOM elements
-const initiaLevel = 'normal';
-const initialReverse = 'blue';
-const initialObverse = 'flags';
-const initialBackground = 'green';
-
 // game settings object
 const settings = {
   obverseTypes: {
@@ -133,7 +127,11 @@ const settings = {
     }
   }
 }
-
+// initial variables
+const initiaLevel = 'normal';
+const initialReverse = 'blue';
+const initialObverse = 'flags';
+const initialBackground = 'green';
 // Sets current variable with initial values
 let level = initiaLevel;
 let reverse = initialReverse;
@@ -146,9 +144,9 @@ let selectedReverse = initialReverse;
 let selectedBackground = initialBackground;
 // Stores the number of found pairs
 let foundPairs = 0;
-// Stores the first of the two fliped cards
+// Stores the first of the two flipped cards
 let currentFirstCard = null;
-// Lets block an event in some cases
+// Is used for blocking card clicking during pair checking
 let locked = false;
 // Stores the number of clicks
 let clickCounter = 0;
@@ -166,8 +164,12 @@ let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let houndreth = 0;
+// Set animations type
+const notFoundPairAnimation = 'wobble';
+const foundPairAnimation = 'tada';
 
-// Checks which property has tob e used when animation ends
+// Detects browser specific animation end event name
+// https://github.com/daneden/animate.css
 const animationEnd = (function (element) {
   const animations = {
     animation: 'animationend',
@@ -176,9 +178,9 @@ const animationEnd = (function (element) {
     WebkitAnimation: 'webkitAnimationEnd',
   };
 
-  for (let animation in animations) {
-    if (element.style[animation] !== undefined) {
-      return animations[animation];
+  for (let propName in animations) {
+    if (element.style[propName] !== undefined) {
+      return animations[propName];
     }
   }
 })(document.createElement('div'));
@@ -396,25 +398,22 @@ deck.addEventListener('click', function flipCard(event) {
     // Counts clicks
     clickCounter++;
     // Flips the card
-    event.target.parentElement.classList.add('fliped-card');
-    // Checks which card was fliped
+    event.target.parentElement.classList.add('flipped-card');
+    // Checks which card was flipped
     if (!currentFirstCard) {
       currentFirstCard = event.target;
     } else {
       // Counts moves and dispaly their number to the user
       move++;
       moveControl.textContent = move;
-      // Locks this eventlistener for checking time
       locked = true;
-      setTimeout(function () {
-        checkPair(currentFirstCard, event.target);
-      }, 1200);
+      checkPair(currentFirstCard, event.target);
     }
   }
 });
 
 /**
- * @description Checks whether the fliped cards are a pair
+ * @description Checks whether the flipped cards are a pair
  * @param {object} firstCard
  * @param {object} secondCard
  */
@@ -425,27 +424,52 @@ function checkPair(firstCard, secondCard) {
 
   // Compares cards
   if (firstCardData !== secondCardData) {
-    // TODO add animations
-    firstCard.parentElement.classList.remove('fliped-card');
-    secondCard.parentElement.classList.remove('fliped-card');
+    animateCards(firstCard, secondCard, false);
     setCurrentRating();
   } else {
-    // TODO add animations
-    firstCard.parentElement.classList.add('found-pair');
-    secondCard.parentElement.classList.add('found-pair');
-    // Increase the number of found pairs
+    animateCards(firstCard, secondCard, true);
     foundPairs++;
     setCurrentRating();
     if (foundPairs === settings.difficultyLevels[level].pairs) {
-      // Ends game
       finishGame();
     }
   }
-
-  // Clears first fliped card
+  // Clears first flipped card
   currentFirstCard = null;
-  // Unlocks eventListener
-  locked = false;
+}
+
+/**
+ * @description Handles checking pair animations
+ * @param {Object} firstCard
+ * @param {Object} secondCard
+ * @param {Boolean} isPairFound
+ */
+function animateCards(firstCard, secondCard, isPairFound) {
+  // Chooses proper animation style
+  const animationStyle = (isPairFound) ? foundPairAnimation : notFoundPairAnimation;
+  // Turns on proper animation
+  firstCard.parentElement.parentElement.classList.add('animated', animationStyle);
+  secondCard.parentElement.parentElement.classList.add('animated', animationStyle);
+  // Adds animation end handler
+  firstCard.parentElement.parentElement.addEventListener(animationEnd, animationEndHandler);
+  secondCard.parentElement.parentElement.addEventListener(animationEnd, animationEndHandler);
+
+/**
+ * @description Turns off animation styles, covers wrong cards or marks found pair
+ * @param {Object} eveny
+ */
+  function animationEndHandler(event) {
+    event.target.classList.remove('animated', animationStyle);
+    const card = event.target.childNodes[0];
+    if (isPairFound) {
+      card.classList.add('found-pair');
+    } else {
+      card.classList.remove('flipped-card');
+    }
+    // Removes itself from DOM object
+    event.target.removeEventListener(animationEnd, animationEndHandler);
+    locked = false;
+  }
 }
 
 
@@ -575,7 +599,6 @@ function calculateRatingLimits() {
     limitsForStages.push([stageThreeStarLimit, stageTwoStarLimit]);
     remainingLimit -= stageStep;
   }
-  console.log(limitsForStages);
   return limitsForStages;
 }
 
@@ -584,7 +607,7 @@ function calculateRatingLimits() {
  * @returns {array}
  */
 function setCurrentRating() {
-  const index = (foundPairs>=ratingLimitsForCurrentLevel.length) ? (ratingLimitsForCurrentLevel.length - 1) : foundPairs;
+  const index = (foundPairs >= ratingLimitsForCurrentLevel.length) ? (ratingLimitsForCurrentLevel.length - 1) : foundPairs;
   if (move <= ratingLimitsForCurrentLevel[index][0]) {
     starRating = 3;
   } else if (move > ratingLimitsForCurrentLevel[index][1]) {
@@ -626,9 +649,9 @@ options.addEventListener('click', function chooseOption(event) {
   //Choose dataset key
   const currentOption = Object.keys(button.dataset)[0];
   // Basing on dataset key sets proper game option
-  switch(currentOption) {
+  switch (currentOption) {
     case 'level':
-       selectedLevel = button.dataset.level;
+      selectedLevel = button.dataset.level;
       break;
     case 'theme':
       selectedObverse = button.dataset.theme;
@@ -684,11 +707,6 @@ function addSettingsPanel() {
 }
 
 //Hides settings panel
-function removeSettingsPanel(){
+function removeSettingsPanel() {
   gameSettings.classList.remove('open');
 }
-
-
-
-
-
